@@ -30,12 +30,11 @@ KUDO is a comprehensive decoder toolkit, offers a variety of decoding algorithms
 
 To use KUDO, simply run the script and follow the on-screen prompts to decode your encoded data. Each algorithm has its own specific requirements and input format.
 
-```python
-# Example usage for AES decryption
-key = "your_aes_key_here"
-ciphertext_b64 = "your_base64_encoded_ciphertext_here"
-plaintext = decrypt_aes(key.encode('utf-8'), base64.b64decode(ciphertext_b64))
-print("Decrypted plaintext:", plaintext)
+```bash
+AES
+Enter the key: "your_aes_key_here"
+Enter the encoded text: "your_base64_encoded_ciphertext_here"
+Decrypted String: "Decoded/Decrypted text"
 ```
 
 ## Installation
