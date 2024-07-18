@@ -1,3 +1,5 @@
+![GIF](https://www.google.com/url?sa=i&url=https%3A%2F%2Fsteamcommunity.com%2Fsharedfiles%2Ffiledetails%2F%3Fid%3D1588167438&psig=AOvVaw1zMVnfzHNl027O9srA9Mp0&ust=1721377160020000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCPC-9-uTsIcDFQAAAAAdAAAAABAE)
+
 # KUDO: Decoder Toolkit
 
 KUDO is a comprehensive decoder toolkit, offers a variety of decoding algorithms to decrypt and decode different types of encoded data.
