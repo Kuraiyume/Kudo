@@ -1,4 +1,4 @@
-![GIF](https://steamcommunity.com/sharedfiles/filedetails/?id=1588167438)
+![GIF](https://www.pinterest.com/pin/314548355215719682/)
 
 # KUDO: Decoder Toolkit
 
