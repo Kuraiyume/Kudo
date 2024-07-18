@@ -1,4 +1,4 @@
-![GIF](https://www.pinterest.com/pin/314548355215719682/)
+![GIF](https://github.com/veilwr4ith/Kudo/blob/main/conan-desu.gif)
 
 # KUDO: Decoder Toolkit
 
