@@ -33,6 +33,7 @@ KUDO is a comprehensive decoder toolkit, offers a variety of decoding algorithms
 25. Tap Code
 26. Nihilist Cipher
 27. Polybius Cipher
+28. North Atlantic Treaty Organization (NATO Phonetic Alphabet)
 
 ## Usage
 
