@@ -49,6 +49,17 @@ MORSE_CODE_DICT = {
     '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.', ' ': '/'
 }
 
+# NATO Dictionary
+NATO_DICT = {
+    "ALPHA": "A", "BRAVO": "B", "CHARLIE": "C", "DELTA": "D",
+    "ECHO": "E", "FOXTROT": "F", "GOLF": "G", "HOTEL": "H",
+    "INDIA": "I", "JULIETT": "J", "KILO": "K", "LIMA": "L",
+    "MIKE": "M", "NOVEMBER": "N", "OSCAR": "O", "PAPA": "P",
+    "QUEBEC": "Q", "ROMEO": "R", "SIERRA": "S", "TANGO": "T",
+    "UNIFORM": "U", "VICTOR": "V", "WHISKEY": "W", "XRAY": "X",
+    "YANKEE": "Y", "ZULU": "Z"
+}
+
 # Help Menu
 help_menu = """
 Available Algorithms:
@@ -73,6 +84,13 @@ Available Algorithms:
 19. Reversed Word
 20. Affine Cipher
 21. Base58
+22. A1Z26
+23. Rail Fence Cipher
+24. Substitution Cipher
+25. Tap Code
+26. Nihilist Cipher
+27. Polybius Cipher
+28. NATO Phonetics
 """
 
 """Function for decrypting AES Encryption"""
@@ -216,7 +234,9 @@ def url_decoder():
             decoded_urls.append(decoded_url)
         except Exception as e:
             print(f"Error decoded URL '{encoded_url.strip()}': {e}")
-
+    print("Decoded URLs:")
+    for decoded_url in decoded_urls:
+        print(decoded_url)
 """Function for decoding Vigenere Cipher"""
 def vigenere_decode(ciphertext, keyword):
     keyword = keyword.upper()
@@ -318,6 +338,132 @@ def affine_decrypt(ciphertext, a, b):
         else:
             plaintext += char
     return plaintext
+
+"""Function for A1Z26 Decoder"""
+def a1z26_decoder(encoded_message):
+    numbers = encoded_message.split()
+    decoded_message = ""
+    for number in numbers:
+        num = int(number)
+        decoded_message += chr(num + 64)
+    return decoded_message
+
+"""Function for Rail Fence Cipher"""
+def rail_fence_decode(cipher_text, num_rails):
+    if num_rails == 1:
+        return cipher_text
+    rail_matrix = [['\n' for _ in range(len(cipher_text))] for _ in range(num_rails)]
+    direction_down = None
+    row, col = 0, 0
+    for char in cipher_text:
+        if row == 0:
+            direction_down = True
+        if row == num_rails - 1:
+            direction_down = False
+        rail_matrix[row][col] = '*'
+        col += 1
+        if direction_down:
+            row += 1
+        else:
+            row -= 1
+    index = 0
+    for i in range(num_rails):
+        for j in range(len(cipher_text)):
+            if rail_matrix[i][j] == '*' and index < len(cipher_text):
+                rail_matrix[i][j] = cipher_text[index]
+                index += 1
+    decoded_text = []
+    row, col = 0, 0
+    for char in cipher_text:
+        if row == 0:
+            direction_down = True
+        if row == num_rails - 1:
+            direction_down = False
+        if rail_matrix[row][col] != '\n':
+            decoded_text.append(rail_matrix[row][col])
+            col += 1
+        if direction_down:
+            row += 1
+        else:
+            row -= 1
+    return "".join(decoded_text)
+
+"""Function to Substitution Cipher"""
+def substitution_cipher_decoder(cipher_alphabet, encoded_message):
+    decode_dict = {cipher_alphabet[i]: chr(65 + i) for i in range(26)}
+    decoded_message = ""
+    for char in encoded_message.upper():
+        if char in decode_dict:
+            decoded_message += decode_dict[char]
+        else:
+            decoded_message += char
+    return decoded_message
+
+"""Function to Tap Code Decoder"""
+def tap_code_decoder(encoded_message):
+    tap_code_square = [
+        ['A', 'B', 'C', 'D', 'E'],
+        ['F', 'G', 'H', 'I', 'J'],
+        ['L', 'M', 'N', 'O', 'P'],
+        ['Q', 'R', 'S', 'T', 'U'],
+        ['V', 'W', 'X', 'Y', 'Z']
+    ]
+    pairs = encoded_message.split()
+    decoded_message = ""
+    for i in range(0, len(pairs), 2):
+        row = len(pairs[i]) - 1
+        col = len(pairs[i + 1]) - 1
+        decoded_message += tap_code_square[row][col]
+    return decoded_message
+
+"""Function for the 6x6 Polybius Square"""
+def create_polybius_square():
+    alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'
+    polybius_square = {}
+    index = 0
+    for row in range(1, 6):
+        for col in range(1, 6):
+            polybius_square[str(row) + str(col)] = alphabet[index]
+            index += 1
+    return polybius_square
+
+"""Function for Nihilist Cipher Decoder"""
+def decode_nihilist_cipher(ciphertext, key, polybius_square):
+    key_numbers = []
+    for char in key:
+        for k, v in polybius_square.items():
+            if v == char.upper():
+                key_numbers.append(int(k))
+    cipher_numbers = [int(num) for num in ciphertext.split()]
+    decoded_message = ""
+    for i in range(len(cipher_numbers)):
+        num = cipher_numbers[i] - key_numbers[i % len(key_numbers)]
+        decoded_message += polybius_square[str(num).zfill(2)]
+    return decoded_message
+
+"""Function for Polybius Cipher Decoder"""
+def decode_polybius_cipher(ciphertext, polybius_square):
+    cipher_numbers = [ciphertext[i:i+2] for i in range(0, len(ciphertext), 2)]
+    decoded_message = ""
+    for pair in cipher_numbers:
+        if pair in polybius_square:
+            decoded_message += polybius_square[pair]
+        else:
+            decoded_message += "?"
+    return decoded_message
+
+"""Function for NATO Decoder"""
+def decode_nato_phonetic(nato_message):
+    nato_dict = NATO_DICT
+    words = nato_message.upper().split()
+    decoded_message = ""
+    
+    for word in words:
+        if word in nato_dict:
+            decoded_message += nato_dict[word]
+        else:
+            decoded_message += "?"
+    return decoded_message
 
 """Main Menu Function"""
 def menu():
@@ -446,11 +592,46 @@ def menu():
                 decoded_text = base58_decode(ciphertext)
                 print("-" * 30)
                 print(f"Decoded String: {decoded_text}")
+            elif prompt == '22':
+                ciphertext = input("Enter the ciphertext: ")
+                decoded_text = a1z26_decoder(ciphertext)
+                print("-" * 30)
+                print(f"Decoded String: {decoded_text}")
+            elif prompt == '23':
+                ciphertext = input("Enter the encoded text: ")
+                num_of_rails = int(input("Enter the number of rails: "))
+                decoded_message = rail_fence_decode(ciphertext, num_of_rails)
+                print(f"Decoded String: {decoded_message}")
+            elif prompt == '24':
+                cipher_alphabet = input("Enter the cipher alphabet (26 letters): ").upper()
+                ciphertext = input("Enter the encoded message: ")
+                decoded_message = substitution_cipher_decoder(cipher_alphabet, ciphertext)
+                print(f"Decoded String: {decoded_message}")
+            elif prompt == '25':
+                ciphertext = input("Enter the encoded Tap Code message (pairs of dots separated by spaces): ")
+                decoded_message = tap_code_decoder(ciphertext)
+                print(f"Decoded String: {decoded_message}")
+            elif prompt == '26':
+                ciphertext = input("Enter the encoded Nihilist cipher message (pairs of digits separated by spaces): ")
+                key = input("Enter the key: ")
+                polybius_square = create_polybius_square()
+                decoded_message = decode_nihilist_cipher(ciphertext, key, polybius_square)
+                print(f"Decoded String: {decoded_message}")
+            elif prompt == '27':
+                ciphertext = input("Enter the encoded Polybius cipher message (pairs of digits without spaces): ")
+                polybius_square = create_polybius_square()
+                decoded_message = decode_polybius_cipher(ciphertext, polybius_square)
+                print(f"Decoded String: {decoded_message}")
+            elif prompt == '28':
+                nato_message = input("Enter the NATO phonetic encoded message (words separated by spaces): ")
+                decoded_message = decode_nato_phonetic(nato_message)
+                print(f"Decoded String: {decoded_message}")
             elif prompt == 'h':
                 print(help_menu)
             else:
                 print("Invalid Option!")
         except KeyboardInterrupt:
             break
+            
 if __name__ == "__main__":
     menu()
