@@ -27,6 +27,12 @@ KUDO is a comprehensive decoder toolkit, offers a variety of decoding algorithms
 19. Reversed Word
 20. Affine Cipher
 21. Base58
+22. A1Z26
+23. Rail Fence Cipher
+24. Substitution Cipher
+25. Tap Code
+26. Nihilist Cipher
+27. Polybius Cipher
 
 ## Usage
 
