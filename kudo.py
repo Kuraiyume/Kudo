@@ -6,27 +6,9 @@ Author: Veilwr4ith                       |
 ------------------------------------------
 """
 
-kudo = r"""
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⣦⡀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄⠀⣿⣷⠀⠀
-⢀⠀⠤⠤⣤⣄⣀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⡧⠚⠀
-⠀⠀⢀⣠⣤⣬⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀							   
-⣠⣾⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀					         
-⣿⠟⠋⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀						    
-⠁⠀⢠⣿⠏⡇⣿⣿⣿⣿⡇⢿⣿⣿⣷⣽⣿⣿⢿⣟⣙⣳⣽⣿⢿⣿⣿⣿⠁⠀			    		      
-⠀⠀⠸⡟⠀⡙⢼⣿⣿⣿⡷⣬⣾⢿⣿⣿⣿⣩⣽⠿⠋⠙⣫⣿⣿⣿⢿⡏⠀⠀				No matter how clever the code, there's always a way to break it.
-⠀⠀⠀⠹⡀⠀⠀⢿⣯⡸⠀⢀⣸⡎⡷⠟⢿⠓⠂⠀⢐⡾⢿⢩⢛⡵⢿⡐⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠡⣳⡄⠈⠚⠀⠀⠀⠀⠑⠄⣀⣀⠠⡜⣋⡼⢲⠭⠁⠀⠀			
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠖⡂⠉⠉⠁⢀⡀⠔⠀⠀⢰⡩⢿⣈⠁⠀⠀⠀⠀					
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠂⠠⢀⠀⠀⠀⣀⡤⠟⣰⡄⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣬⣿⣿⣿⣾⣿⣿⣿⣷⣶⣤⣄⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣾⣿⣿⠿⠙⢻⢿⣿⣿⣿⣿⣿⣿⣿⣷⡄
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⡿⠐⡸⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
- 
-"""
-
+import os
 import base64
-import base58
+#import base58
 from Crypto.Cipher import AES
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
@@ -35,7 +17,22 @@ import idna
 import quopri
 import datetime
 import urllib.parse
+import argparse
 
+# banner
+
+kudo = """			          .-""-.
+ /$$   /$$                 /$$   / .--. \\
+| $$  /$$/                | $$  / /    \\ \\
+| $$ /$$/  /$$   /$$  /$$$$$$$  | |.-""-.|  
+| $$$$$/  | $$  | $$ /$$__  $$ ///`.::::.`\\
+| $$  $$  | $$  | $$| $$  | $$||| ::/  \:: ; 
+| $$\\  $$ | $$  | $$| $$  | $$||; ::\__/:: ; 
+| $$ \\  $$|  $$$$$$/|  $$$$$$$ \\\\\\ '::::' / 
+|__/  \\__/ \\______/  \\_______/  `=':-..-'`
+
+No matter how clever the code, there's always a way to break it.
+"""
 # Morse Code Dictionary
 MORSE_CODE_DICT = {
     'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
@@ -121,7 +118,7 @@ def decrypt_rsa(private_key, ciphertext_b64):
     plaintext = cipher_rsa.decrypt(ciphertext)
     return plaintext.decode('utf-8')
 
-"""Function for decoding ASCII58 Algorithm"""
+"""Function for decoding ASCII85 Algorithm"""
 def decode_ascii85(encoded_data):
     try:
         decoded_data = base64.a85decode(encoded_data.encode('ascii'))
@@ -134,18 +131,18 @@ def base32_decode(encoded_text):
     try:
         decoded_bytes = base64.b32decode(encoded_text)
         decoded_text = decoded_bytes.decode('utf-8')
-        print(f"Decoded String: {decoded_text}")
+        return decoded_text
     except:
-        print("Decoding Failed.")
+        return "Decoding Failed."
 
 """Function for decoding Base64 Algorithm"""
 def base64_decode(encoded_text):
     try:
         decoded_bytes = base64.b64decode(encoded_text)
         decoded_text = decoded_bytes.decode('utf-8')
-        print(f"Decoded String: {decoded_text}")
+        return decoded_text
     except:
-        print("Decoding Failed.")
+        return "Decoding Failed."
 
 """Function for decoding Caesar Cipher"""
 def caesar_decoder(text, shift):
@@ -223,20 +220,17 @@ def unix_time_decoder(timestamp):
         return "Invalid Unix timestamp"
     
 """Function for decoding URL"""
-def url_decoder():
-    encoded_urls = input("Enter the encoded URL(s) separated by comma: ")
+def url_decoder(encoded_urls):
     urls = encoded_urls.split(',')
-    
     decoded_urls = []
     for encoded_url in urls:
         try:
             decoded_url = urllib.parse.unquote(encoded_url)
             decoded_urls.append(decoded_url)
         except Exception as e:
-            print(f"Error decoded URL '{encoded_url.strip()}': {e}")
-    print("Decoded URLs:")
-    for decoded_url in decoded_urls:
-        print(decoded_url)
+            return f"Error decoded URL '{encoded_url.strip()}': {e}"
+    return '\n'.join(decoded_urls)
+
 """Function for decoding Vigenere Cipher"""
 def vigenere_decode(ciphertext, keyword):
     keyword = keyword.upper()
@@ -262,376 +256,286 @@ def xor_decode(ciphertext, key):
         plaintext += chr(ord(char) ^ key)
     return plaintext
 
-"""Function for decoding Base58"""
-def base58_decode(encoded_str):
-    decoded_bytes = base58.b58decode(encoded_str)
-    decoded_str = str(decoded_bytes, 'utf-8') if isinstance(decoded_bytes, bytes) else decoded_bytes
-    return decoded_str
-
-"""Function for decoding BrainFuck Code"""
+"""Function for decoding Brainfuck"""
 def brainfuck_decode(code):
-    code = list(filter(lambda x: x in ['+', '-', '<', '>', '[', ']', '.', ','], code))
-    memory = [0] * 30000
-    pointer = 0
+    code = ''.join(filter(lambda x: x in ('+', '-', '<', '>', '[', ']', '.', ','), code))
+    code_ptr = 0
+    memory = [0]
+    mem_ptr = 0
     output = ""
     loop_stack = []
-    loop_map = {}
-    for idx, char in enumerate(code):
-        if char =='[':
-            loop_stack.append(idx)
-        elif char == ']':
-            if loop_stack:
-                start = loop_stack.pop()
-                loop_map[start] = idx
-                loop_map[idx] = start
-            else:
-                raise ValueError("Mismatched brackets in Brainfuck code.")
-    idx = 0
-    while idx < len(code):
-        command = code[idx]
-        if command == '+':
-            memory[pointer] = (memory[pointer] + 1) % 256
-        elif command == '-':
-            memory[pointer] = (memory[pointer] - 1) % 256
-        elif command == '>':
-            pointer = (pointer + 1) % 30000
+
+    while code_ptr < len(code):
+        command = code[code_ptr]
+
+        if command == '>':
+            mem_ptr += 1
+            if mem_ptr == len(memory):
+                memory.append(0)
         elif command == '<':
-            pointer = (pointer - 1) % 30000
-        elif command == '[':
-            if memory[pointer] == 0:
-                idx = loop_map[idx]
-        elif command == ']':
-            if memory[pointer] != 0:
-                idx = loop_map[idx]
+            mem_ptr = max(0, mem_ptr - 1)
+        elif command == '+':
+            memory[mem_ptr] = (memory[mem_ptr] + 1) % 256
+        elif command == '-':
+            memory[mem_ptr] = (memory[mem_ptr] - 1) % 256
         elif command == '.':
-            output += chr(memory[pointer])
+            output += chr(memory[mem_ptr])
         elif command == ',':
-            pass
-        idx += 1
+            pass  # Input is not supported
+        elif command == '[':
+            if memory[mem_ptr] == 0:
+                open_brackets = 1
+                while open_brackets != 0:
+                    code_ptr += 1
+                    if code[code_ptr] == '[':
+                        open_brackets += 1
+                    elif code[code_ptr] == ']':
+                        open_brackets -= 1
+            else:
+                loop_stack.append(code_ptr)
+        elif command == ']':
+            if memory[mem_ptr] != 0:
+                code_ptr = loop_stack[-1]
+            else:
+                loop_stack.pop()
+
+        code_ptr += 1
+
     return output
 
-"""Function for decoding a reversed word"""
-def decode_reverse(text):
-    original_word = text[::-1]
-    return original_word
+"""Function for decoding Reversed Words"""
+def reversed_word_decoder(text):
+    words = text.split()
+    reversed_text = ' '.join(word[::-1] for word in words)
+    return reversed_text
 
-"""2 Functions for affine cipher 'mod_inverse' and 'affine_decrypt'"""
-def mod_inverse(a, m):
-    a = a % m
-    for x in range(1, m):
-        if (a * x) % m == 1:
-            return x
-        return None
-
-def affine_decrypt(ciphertext, a, b):
-    m = 26
-    a_inv = mod_inverse(a, m)
-    if a_inv is None:
-        raise ValueError("The key 'a' has no modular inverse, decryption is not possible.")
-    plaintext = ""
-    for char in ciphertext:
+"""Function for decoding Affine Cipher"""
+def affine_decoder(text, a, b):
+    mod_inverse_a = pow(a, -1, 26)
+    decrypted_text = ""
+    for char in text:
         if char.isalpha():
-            y = ord(char) - ord('A') if char.isupper() else ord(char) - ord('a')
-            x = (a_inv * (y - b)) % m
-            decrypted_char = chr(x + ord('A')) if char.isupper() else chr(x + ord('a'))
-            plaintext += decrypted_char
+            if char.isupper():
+                decrypted_char = chr((mod_inverse_a * ((ord(char) - ord('A') - b) % 26)) + ord('A'))
+            else:
+                decrypted_char = chr((mod_inverse_a * ((ord(char) - ord('a') - b) % 26)) + ord('a'))
+            decrypted_text += decrypted_char
         else:
-            plaintext += char
+            decrypted_text += char
+    return decrypted_text
+
+"""Function for decoding Base58"""
+def base58_decode(encoded_text):
+    try:
+        decoded_bytes = base58.b58decode(encoded_text)
+        decoded_text = decoded_bytes.decode('utf-8')
+        return decoded_text
+    except:
+        return "Decoding Failed."
+
+"""Function for decoding A1Z26"""
+def a1z26_decode(text):
+    numbers = text.split()
+    decoded_text = ''
+    for number in numbers:
+        if number.isdigit():
+            decoded_text += chr(int(number) + 64)
+        else:
+            decoded_text += number
+    return decoded_text
+
+"""Function for decoding Rail Fence Cipher"""
+def rail_fence_decoder(ciphertext, num_rails):
+    if num_rails == 1:
+        return ciphertext
+
+    rail = [''] * num_rails
+    direction = None
+    row = 0
+    for char in ciphertext:
+        if row == 0:
+            direction = 1
+        elif row == num_rails - 1:
+            direction = -1
+
+        rail[row] += char
+        row += direction
+
+    result = ''.join(rail)
+    return result
+
+"""Function for decoding Substitution Cipher"""
+def substitution_cipher_decoder(text, key):
+    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    key = key.upper()
+    decrypted_text = ''
+    for char in text:
+        if char.upper() in key:
+            decrypted_char = alphabet[key.index(char.upper())]
+            if char.islower():
+                decrypted_char = decrypted_char.lower()
+            decrypted_text += decrypted_char
+        else:
+            decrypted_text += char
+    return decrypted_text
+
+"""Function for decoding Tap Code"""
+def tap_code_decoder(encoded_text):
+    tap_code_dict = {
+        '11': 'A', '12': 'B', '13': 'C', '14': 'D', '15': 'E',
+        '21': 'F', '22': 'G', '23': 'H', '24': 'I', '25': 'J',
+        '31': 'L', '32': 'M', '33': 'N', '34': 'O', '35': 'P',
+        '41': 'Q', '42': 'R', '43': 'S', '44': 'T', '45': 'U',
+        '51': 'V', '52': 'W', '53': 'X', '54': 'Y', '55': 'Z',
+        '23': 'K'
+    }
+    pairs = encoded_text.split(' ')
+    decoded_text = ''
+    for pair in pairs:
+        if pair in tap_code_dict:
+            decoded_text += tap_code_dict[pair]
+        else:
+            decoded_text += pair
+    return decoded_text
+
+"""Function for decoding Nihilist Cipher"""
+def nihilist_cipher_decoder(ciphertext, key):
+    key_numbers = [ord(char.upper()) - 64 for char in key]
+    ciphertext_numbers = [int(num) for num in ciphertext.split()]
+    plaintext = ''
+    key_index = 0
+
+    for num in ciphertext_numbers:
+        plain_num = num - key_numbers[key_index]
+        if plain_num < 1:
+            plain_num += 26
+        plaintext += chr(plain_num + 64)
+        key_index = (key_index + 1) % len(key_numbers)
+
     return plaintext
 
-"""Function for A1Z26 Decoder"""
-def a1z26_decoder(encoded_message):
-    numbers = encoded_message.split()
-    decoded_message = ""
-    for number in numbers:
-        num = int(number)
-        decoded_message += chr(num + 64)
-    return decoded_message
+"""Function for decoding Polybius Cipher"""
+def polybius_decoder(encoded_text):
+    polybius_square = {
+        '11': 'A', '12': 'B', '13': 'C', '14': 'D', '15': 'E',
+        '21': 'F', '22': 'G', '23': 'H', '24': 'I', '25': 'K',
+        '31': 'L', '32': 'M', '33': 'N', '34': 'O', '35': 'P',
+        '41': 'Q', '42': 'R', '43': 'S', '44': 'T', '45': 'U',
+        '51': 'V', '52': 'W', '53': 'X', '54': 'Y', '55': 'Z'
+    }
+    decoded_text = ""
+    pairs = encoded_text.split()
+    for pair in pairs:
+        decoded_text += polybius_square.get(pair, "?")
+    return decoded_text
 
-"""Function for Rail Fence Cipher"""
-def rail_fence_decode(cipher_text, num_rails):
-    if num_rails == 1:
-        return cipher_text
-    rail_matrix = [['\n' for _ in range(len(cipher_text))] for _ in range(num_rails)]
-    direction_down = None
-    row, col = 0, 0
-    for char in cipher_text:
-        if row == 0:
-            direction_down = True
-        if row == num_rails - 1:
-            direction_down = False
-        rail_matrix[row][col] = '*'
-        col += 1
-        if direction_down:
-            row += 1
-        else:
-            row -= 1
-    index = 0
-    for i in range(num_rails):
-        for j in range(len(cipher_text)):
-            if rail_matrix[i][j] == '*' and index < len(cipher_text):
-                rail_matrix[i][j] = cipher_text[index]
-                index += 1
-    decoded_text = []
-    row, col = 0, 0
-    for char in cipher_text:
-        if row == 0:
-            direction_down = True
-        if row == num_rails - 1:
-            direction_down = False
-        if rail_matrix[row][col] != '\n':
-            decoded_text.append(rail_matrix[row][col])
-            col += 1
-        if direction_down:
-            row += 1
-        else:
-            row -= 1
-    return "".join(decoded_text)
-
-"""Function to Substitution Cipher"""
-def substitution_cipher_decoder(cipher_alphabet, encoded_message):
-    decode_dict = {cipher_alphabet[i]: chr(65 + i) for i in range(26)}
-    decoded_message = ""
-    for char in encoded_message.upper():
-        if char in decode_dict:
-            decoded_message += decode_dict[char]
-        else:
-            decoded_message += char
-    return decoded_message
-
-"""Function to Tap Code Decoder"""
-def tap_code_decoder(encoded_message):
-    tap_code_square = [
-        ['A', 'B', 'C', 'D', 'E'],
-        ['F', 'G', 'H', 'I', 'J'],
-        ['L', 'M', 'N', 'O', 'P'],
-        ['Q', 'R', 'S', 'T', 'U'],
-        ['V', 'W', 'X', 'Y', 'Z']
-    ]
-    pairs = encoded_message.split()
-    decoded_message = ""
-    for i in range(0, len(pairs), 2):
-        row = len(pairs[i]) - 1
-        col = len(pairs[i + 1]) - 1
-        decoded_message += tap_code_square[row][col]
-    return decoded_message
-
-"""Function for the 6x6 Polybius Square"""
-def create_polybius_square():
-    alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'
-    polybius_square = {}
-    index = 0
-    for row in range(1, 6):
-        for col in range(1, 6):
-            polybius_square[str(row) + str(col)] = alphabet[index]
-            index += 1
-    return polybius_square
-
-"""Function for Nihilist Cipher Decoder"""
-def decode_nihilist_cipher(ciphertext, key, polybius_square):
-    key_numbers = []
-    for char in key:
-        for k, v in polybius_square.items():
-            if v == char.upper():
-                key_numbers.append(int(k))
-    cipher_numbers = [int(num) for num in ciphertext.split()]
-    decoded_message = ""
-    for i in range(len(cipher_numbers)):
-        num = cipher_numbers[i] - key_numbers[i % len(key_numbers)]
-        decoded_message += polybius_square[str(num).zfill(2)]
-    return decoded_message
-
-"""Function for Polybius Cipher Decoder"""
-def decode_polybius_cipher(ciphertext, polybius_square):
-    cipher_numbers = [ciphertext[i:i+2] for i in range(0, len(ciphertext), 2)]
-    decoded_message = ""
-    for pair in cipher_numbers:
-        if pair in polybius_square:
-            decoded_message += polybius_square[pair]
-        else:
-            decoded_message += "?"
-    return decoded_message
-
-"""Function for NATO Decoder"""
-def decode_nato_phonetic(nato_message):
-    nato_dict = NATO_DICT
-    words = nato_message.upper().split()
-    decoded_message = ""
-    
+"""Function for decoding NATO Phonetics"""
+def nato_decoder(text):
+    words = text.split()
+    decoded_message = []
     for word in words:
-        if word in nato_dict:
-            decoded_message += nato_dict[word]
-        else:
-            decoded_message += "?"
-    return decoded_message
+        decoded_word = NATO_DICT.get(word.upper(), '')
+        decoded_message.append(decoded_word)
+    return ''.join(decoded_message)
 
-"""Main Menu Function"""
-def menu():
+def main():
+    os.system("clear")
     print(kudo)
-    while True:
-        try:
-            prompt = input("~> ")
-            if not prompt:
-                continue
-            elif prompt == '1':
-                key = input("Enter the AES key (16, 24, or 32 bytes): ")
-                key_encode = key.encode('utf-8')
-                print("Length of key before encoding:", len(key))
-                print("Length of key after encoding:", len(key_encode))
-                ciphertext_b64 = input("Enter the encoded ciphertext: ")
-                ciphertext = base64.b64decode(ciphertext_b64)
-                try:
-                    print("-" * 30)
-                    plaintext = decrypt_aes(key_encode, ciphertext)
-                    print("Decrypted plaintext:", plaintext)
-                except Exception as e:
-                    print("Error:", e)
-            elif prompt == '2':
-                encoded_text = input("Enter the ROT13 String: ")
-                print('-' * 30)
-                decoded_text = rot13_decoder(encoded_text)
-                print(f"Decoded Text: {decoded_text}")
-            elif prompt == '3':
-                private_key_str = input("Enter the RSA private key: ")
-                ciphertext_b64 = input("Enter the encoded ciphertext: ")
-                try:
-                    plaintext = decrypt_rsa(private_key_str, ciphertext_b64)
-                    print("-" * 30)
-                    print("Decrypted plaintext:", plaintext)
-                except Exception as e:
-                    print("Error:", e)
-            elif prompt == '4':
-                encoded_data = input("Enter the encoded data: ")
-                decoded_data = decode_ascii85(encoded_data)
-                print("-" * 30)
-                print(f"Decoded String: {decoded_data}")
-            elif prompt == '5':
-                encoded_string = input("Enter the encoded data: ")
-                print("-" * 30)
-                base32_decode(encoded_string)
-            elif prompt == '6':
-                encoded_string = input("Enter the encoded data: ")
-                print("-" * 30)
-                base64_decode(encoded_string)
-            elif prompt == '7':
-                text = input("Enter the encoded string: ")
-                shift = int(input("Enter the shift value: "))
-                decrypted_text = caesar_decoder(text, shift)
-                print("-" * 30)
-                print(f"Decrypted text: {decrypted_text}")
-            elif prompt == '8':
-                hex_input = input("Enter the hexadecimal string: ")
-                plaintext = hex_to_plaintext(hex_input)
-                print("-" * 30)
-                print("Plaintext:", plaintext)
-            elif prompt == '9':
-                html_entity = input("Enter the HTML Entity: ")
-                decoded_entity = html_entity_decoder(html_entity)
-                print("-" * 30)
-                print("Decoded Entity: ", decoded_entity)
-            elif prompt == '10':
-                morse_code = input("Enter the Morse Code: ")
-                decoded_message = morse_decoder(morse_code)
-                print("-" * 30)
-                print("Decoded Message:", decoded_message)
-            elif prompt == '11':
-                punnycode_text = input("Enter the Punnycode Text: ")
-                decoded_text = punnycode_decoder(punnycode_text)
-                print("-" * 30)
-                print(f"Decoded Punnycode Text: {decoded_text}")
-            elif prompt == '12':
-                quoted_printable_text = input("Enter the QPT: ")
-                decoded_text = quoted_printable_decoder(quoted_printable_text)
-                print("-" * 30)
-                print(f"Decoded Text: {decoded_text}")
-            elif prompt == '13':
-                unicode_text = input("Enter the Unicode Text: ")
-                decoded_text = unicode_decoder(unicode_text)
-                print("-" * 30)
-                print("Decoded text:", decoded_text)
-            elif prompt == '14':
-                timestamp = input("Enter Unix timestamp: ")
-                decoded_time = unix_time_decoder(timestamp)
-                print("-" * 30)
-                print("Decoded time:", decoded_time)
-            elif prompt == '15':
-                url_decoder()
-            elif prompt == '16':
-                ciphertext = input("Enter the ciphertext: ")
-                keyword = input("Enter the keyword: ")
-                decoded_text = vigenere_decode(ciphertext, keyword)
-                print("-" * 30)
-                print(f"Decoded String: {decoded_text}")
-            elif prompt == '17':
-                ciphertext = input("Enter the ciphertext: ")
-                key = int(input("Enter the key (an integer): "))
-                decoded_text = xor_decode(ciphertext, key)
-                print("-" * 30)
-                print(f"Decoded String: {decoded_text}")
-            elif prompt == '18':
-                brainfuck_code = input("Enter the brainfuck code: ")
-                decoded_text = brainfuck_decode(brainfuck_code)
-                print("-" * 30)
-                print(f"Decoded text: {decoded_text}")
-            elif prompt == '19':
-                reversed_word = input("Enter the reversed word: ")
-                original_word = decode_reverse(reversed_word)
-                print("-" * 30)
-                print(f"Decoded String: {original_word}")
-            elif prompt == '20':
-                ciphertext = input("Enter the ciphertext: ")
-                a = int(input("Enter the key 'a' (must be coprime with 26): "))
-                b = int(input("Enter the key 'b': "))
-                try:
-                    plaintext = affine_decrypt(ciphertext, a, b)
-                    print(f"Decoded String: {plaintext}")
-                except ValueError as e:
-                    print(e)
-            elif prompt == '21':
-                ciphertext = input("Enter the ciphertext: ")
-                decoded_text = base58_decode(ciphertext)
-                print("-" * 30)
-                print(f"Decoded String: {decoded_text}")
-            elif prompt == '22':
-                ciphertext = input("Enter the ciphertext: ")
-                decoded_text = a1z26_decoder(ciphertext)
-                print("-" * 30)
-                print(f"Decoded String: {decoded_text}")
-            elif prompt == '23':
-                ciphertext = input("Enter the encoded text: ")
-                num_of_rails = int(input("Enter the number of rails: "))
-                decoded_message = rail_fence_decode(ciphertext, num_of_rails)
-                print(f"Decoded String: {decoded_message}")
-            elif prompt == '24':
-                cipher_alphabet = input("Enter the cipher alphabet (26 letters): ").upper()
-                ciphertext = input("Enter the encoded message: ")
-                decoded_message = substitution_cipher_decoder(cipher_alphabet, ciphertext)
-                print(f"Decoded String: {decoded_message}")
-            elif prompt == '25':
-                ciphertext = input("Enter the encoded Tap Code message (pairs of dots separated by spaces): ")
-                decoded_message = tap_code_decoder(ciphertext)
-                print(f"Decoded String: {decoded_message}")
-            elif prompt == '26':
-                ciphertext = input("Enter the encoded Nihilist cipher message (pairs of digits separated by spaces): ")
-                key = input("Enter the key: ")
-                polybius_square = create_polybius_square()
-                decoded_message = decode_nihilist_cipher(ciphertext, key, polybius_square)
-                print(f"Decoded String: {decoded_message}")
-            elif prompt == '27':
-                ciphertext = input("Enter the encoded Polybius cipher message (pairs of digits without spaces): ")
-                polybius_square = create_polybius_square()
-                decoded_message = decode_polybius_cipher(ciphertext, polybius_square)
-                print(f"Decoded String: {decoded_message}")
-            elif prompt == '28':
-                nato_message = input("Enter the NATO phonetic encoded message (words separated by spaces): ")
-                decoded_message = decode_nato_phonetic(nato_message)
-                print(f"Decoded String: {decoded_message}")
-            elif prompt == 'h':
-                print(help_menu)
-            else:
-                print("Invalid Option!")
-        except KeyboardInterrupt:
-            break
-            
+    parser = argparse.ArgumentParser(description="Decrypt various encoded/encoded texts.")
+    parser.add_argument("-a", "--algo", help="Specify the algorithm to use for decoding", choices=[
+        "rot13", "ascii85", "base32", "base64", "caesar", "hex", "html", "morse", "punnycode",
+        "quoted_printable", "unicode", "unix_time", "url", "vigenere", "xor", "aes", "rsa",
+        "brainfuck", "reversed_word", "affine", "base58", "a1z26", "railfence", "substitution",
+        "tapcode", "nihilist", "polybius", "nato"], required=True)
+    parser.add_argument("-d", "--data", help="Data to decrypt", required=True)
+    parser.add_argument("-k", "--key", help="Key for decryption (if applicable)")
+    parser.add_argument("-l", "--list_algo", action="store_true", help="List all available algorithms")
+
+    args = parser.parse_args()
+
+    if args.list_algo:
+        print("Available algorithms:")
+        for algo in [
+            "rot13", "ascii85", "base32", "base64", "caesar", "hex", "html", "morse", "punnycode",
+            "quoted_printable", "unicode", "unix_time", "url", "vigenere", "xor", "aes", "rsa",
+            "brainfuck", "reversed_word", "affine", "base58", "a1z26", "railfence", "substitution",
+            "tapcode", "nihilist", "polybius", "nato"]:
+            print(f"  - {algo}")
+        return
+
+    algo = args.algo.lower()
+    data = args.data
+
+    if algo == "aes":
+        # For AES, you need to provide a key and ciphertext
+        key = input("Enter AES key: ")
+        print(decrypt_aes(key.encode(), bytes.fromhex(data)))
+    elif algo == "rot13":
+        print(rot13_decoder(data))
+    elif algo == "rsa":
+        # For RSA, you need to provide a private key and ciphertext
+        private_key = input("Enter RSA private key: ")
+        print(decrypt_rsa(private_key, data))
+    elif algo == "ascii85":
+        print(decode_ascii85(data))
+    elif algo == "base32":
+        print(base32_decode(data))
+    elif algo == "base64":
+        print(base64_decode(data))
+    elif algo == "caesar":
+        shift = int(input("Enter Caesar shift value: "))
+        print(caesar_decoder(data, shift))
+    elif algo == "hex":
+        print(hex_to_plaintext(data))
+    elif algo == "html":
+        print(html_entity_decoder(data))
+    elif algo == "morse":
+        print(morse_decoder(data))
+    elif algo == "punny":
+        print(punnycode_decoder(data))
+    elif algo == "quoted":
+        print(quoted_printable_decoder(data))
+    elif algo == "unicode":
+        print(unicode_decoder(data))
+    elif algo == "unixtime":
+        print(unix_time_decoder(data))
+    elif algo == "url":
+        print(url_decoder(data))
+    elif algo == "vigenere":
+        keyword = input("Enter Vigenere keyword: ")
+        print(vigenere_decode(data, keyword))
+    elif algo == "xor":
+        key = int(input("Enter XOR key: "))
+        print(xor_decode(data, key))
+    elif algo == "brainfuck":
+        print(brainfuck_decode(data))
+    elif algo == "reversed":
+        print(reversed_word_decoder(data))
+    elif algo == "affine":
+        a = int(input("Enter Affine 'a' value: "))
+        b = int(input("Enter Affine 'b' value: "))
+        print(affine_decoder(data, a, b))
+    elif algo == "base58":
+        print(base58_decode(data))
+    elif algo == "a1z26":
+        print(a1z26_decode(data))
+    elif algo == "railfence":
+        num_rails = int(input("Enter number of rails: "))
+        print(rail_fence_decoder(data, num_rails))
+    elif algo == "substitution":
+        key = input("Enter substitution key: ")
+        print(substitution_cipher_decoder(data, key))
+    elif algo == "tapcode":
+        print(tap_code_decoder(data))
+    elif algo == "nihilist":
+        key = input("Enter Nihilist key: ")
+        print(nihilist_cipher_decoder(data, key))
+    elif algo == "polybius":
+        print(polybius_decoder(data))
+    elif algo == "nato":
+        print(nato_decoder(data))
+    else:
+        print(f"Unsupported algorithm: {algo}")
+
 if __name__ == "__main__":
-    menu()
+    main()
