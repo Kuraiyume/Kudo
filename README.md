@@ -37,6 +37,8 @@ KUDO is a comprehensive decoder toolkit, offers a variety of decoding algorithms
 
 ## Usage
 
+## Interface
+
 To use KUDO, simply run the script and follow the on-screen prompts to decode your encoded data. Each algorithm has its own specific requirements and input format.
 
 ```bash
@@ -44,6 +46,12 @@ AES
 Enter the key: "your_aes_key_here"
 Enter the encoded text: "your_base64_encoded_ciphertext_here"
 Decrypted String: "Decoded/Decrypted text"
+```
+
+## Argument (kudo_v2.py)
+
+```bash
+python3 kudo.py -a <algorithm> -d <data>
 ```
 
 ## Installation
@@ -67,4 +75,5 @@ python3 kudo.py
 ## Author
 
 - **Veilwr4ith**
+- **mkdirlove**
 
