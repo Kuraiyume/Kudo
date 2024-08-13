@@ -34,7 +34,8 @@ Kudo is a versatile decoding toolkit that provides a range of algorithms to hand
 26. Nihilist Cipher
 27. Polybius Cipher
 28. North Atlantic Treaty Organization (NATO Phonetic Alphabet)
-
+29. Fernet Encryption
+    
 ## Installation
 
 1. Clone the repository
