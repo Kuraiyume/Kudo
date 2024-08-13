@@ -14,7 +14,7 @@ kudo = r"""
 ⣠⣾⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀					         
 ⣿⠟⠋⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀						    
 ⠁⠀⢠⣿⠏⡇⣿⣿⣿⣿⡇⢿⣿⣿⣷⣽⣿⣿⢿⣟⣙⣳⣽⣿⢿⣿⣿⣿⠁⠀			    		      
-⠀⠀⠸⡟⠀⡙⢼⣿⣿⣿⡷⣬⣾⢿⣿⣿⣿⣩⣽⠿⠋⠙⣫⣿⣿⣿⢿⡏⠀⠀				No matter how clever the code, there's always a way to break it.
+⠀⠀⠸⡟⠀⡙⢼⣿⣿⣿⡷⣬⣾⢿⣿⣿⣿⣩⣽⠿⠋⠙⣫⣿⣿⣿⢿⡏⠀⠀	    No matter how clever the code, there's always a way to break it.
 ⠀⠀⠀⠹⡀⠀⠀⢿⣯⡸⠀⢀⣸⡎⡷⠟⢿⠓⠂⠀⢐⡾⢿⢩⢛⡵⢿⡐⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠡⣳⡄⠈⠚⠀⠀⠀⠀⠑⠄⣀⣀⠠⡜⣋⡼⢲⠭⠁⠀⠀			
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠖⡂⠉⠉⠁⢀⡀⠔⠀⠀⢰⡩⢿⣈⠁⠀⠀⠀⠀					
@@ -22,7 +22,6 @@ kudo = r"""
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣬⣿⣿⣿⣾⣿⣿⣿⣷⣶⣤⣄⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣾⣿⣿⠿⠙⢻⢿⣿⣿⣿⣿⣿⣿⣿⣷⡄
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⡿⠐⡸⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
- 
 """
 
 import base64
@@ -32,9 +31,13 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 import html
 import idna
+import time
 import quopri
 import datetime
 import urllib.parse
+import sys
+from cryptography.fernet import Fernet
+import time
 
 # Morse Code Dictionary
 MORSE_CODE_DICT = {
@@ -62,7 +65,7 @@ NATO_DICT = {
 
 # Help Menu
 help_menu = """
-Available Algorithms:
+[+] Shinichi's Experiences:
 1. Advanced Encryption Standard (AES)
 2. ROT13
 3. Rivest-Shamir-Adleman (RSA)
@@ -91,7 +94,26 @@ Available Algorithms:
 26. Nihilist Cipher
 27. Polybius Cipher
 28. NATO Phonetics
+29. Fernet 
 """
+
+"""Function for printing with grace"""
+def print_with_grace(text, delay_per_letter):
+    for character in text:
+        print(character, end='', flush=True)
+        time.sleep(delay_per_letter / 1000)
+
+"""Function for having a converstion with Shinichi Kudo"""
+def talk_with_kudo():
+    print_with_grace("[+] Shinichi Kudo: Hi there, looks like you're here to uncover the secret beneath the encoded fortune that you have.", 3)
+    print()
+    time.sleep(4)
+    print_with_grace("[+] Shinichi Kudo: Don't worry, using my deduction skills, I will help you reveal the truth that you want to know.", 3)
+    print()
+    time.sleep(4)
+    print_with_grace("[+] Shinichi Kudo: Let's start!", 3)
+    print()
+    time.sleep(3)
 
 """Function for decrypting AES Encryption"""
 def decrypt_aes(key, ciphertext):
@@ -120,7 +142,7 @@ def decrypt_rsa(private_key_path, ciphertext_b64):
     try:
         private_key = RSA.import_key(private_key)
     except ValueError as e:
-        raise ValueError("Invalid RSA private key format") from e
+        raise ValueError("[-] Shinichi Kudo: Invalid RSA private key format") from e
     ciphertext = base64.b64decode(ciphertext_b64)
     cipher_rsa = PKCS1_OAEP.new(private_key)
     plaintext = cipher_rsa.decrypt(ciphertext)
@@ -132,25 +154,25 @@ def decode_ascii85(encoded_data):
         decoded_data = base64.a85decode(encoded_data.encode('ascii'))
         return decoded_data.decode('utf-8')
     except base64.binascii.Error:
-        return "Error: Invalid ASCII85 encoded data"
+        return "[-] Shinichi Kudo: Invalid ASCII85 encoded data"
 
 """Function for decoding Base32 Algorithm"""
 def base32_decode(encoded_text):
     try:
         decoded_bytes = base64.b32decode(encoded_text)
         decoded_text = decoded_bytes.decode('utf-8')
-        print(f"Decoded String: {decoded_text}")
+        print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
     except:
-        print("Decoding Failed.")
+        print("[-] Shinichi Kudo: Decoding Failed.")
 
 """Function for decoding Base64 Algorithm"""
 def base64_decode(encoded_text):
     try:
         decoded_bytes = base64.b64decode(encoded_text)
         decoded_text = decoded_bytes.decode('utf-8')
-        print(f"Decoded String: {decoded_text}")
+        print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
     except:
-        print("Decoding Failed.")
+        print("[-] Shinichi Kudo: Decoding Failed.")
 
 """Function for decoding Caesar Cipher"""
 def caesar_decoder(text, shift):
@@ -173,7 +195,7 @@ def hex_to_plaintext(hex_string):
         plaintext = byte_data.decode('utf-8')
         return plaintext
     except Exception as i:
-        print("Error:", i)
+        print("[-] Shinichi Kudo:", i)
         return None
     
 """Function for decoding HTML Entity"""
@@ -199,7 +221,7 @@ def punnycode_decoder(text):
         decoded_text = idna.decode(text)
         return decoded_text
     except idna.IDNAError as e:
-        print(f"Error: {e}")
+        print(f"[-] Shinichi Kudo: {e}")
         return None
     
 """Function for decoding Quoted Printable"""
@@ -208,7 +230,7 @@ def quoted_printable_decoder(text):
         decoded_text = quopri.decodestring(text).decode('utf-8')
         return decoded_text
     except Exception as fuck:
-        print("Error: ", fuck)
+        print("[-] Shinichi Kudo: ", fuck)
 
 """Function for decoding Unicode"""
 def unicode_decoder(text):
@@ -216,7 +238,7 @@ def unicode_decoder(text):
         decoded_text = text.encode('utf-8').decode('unicode-escape')
         return decoded_text
     except UnicodeDecodeError:
-        return "Error: Unable to decode Unicode text"
+        return "[-] Shinichi Kudo: Unable to decode Unicode text"
     
 """Function for decoding UnixTime"""
 def unix_time_decoder(timestamp):
@@ -225,23 +247,23 @@ def unix_time_decoder(timestamp):
         date_time = datetime.datetime.utcfromtimestamp(timestamp)
         return date_time.strftime('%Y-%m-%d %H:%M:%S UTC')
     except ValueError:
-        return "Invalid Unix timestamp"
+        return "[-] Shinichi Kudo: Invalid Unix timestamp"
     
 """Function for decoding URL"""
 def url_decoder():
-    encoded_urls = input("Enter the encoded URL(s) separated by comma: ")
+    encoded_urls = input("[*] Enter the encoded URL(s) separated by comma: ")
     urls = encoded_urls.split(',')
-    
     decoded_urls = []
     for encoded_url in urls:
         try:
             decoded_url = urllib.parse.unquote(encoded_url)
             decoded_urls.append(decoded_url)
         except Exception as e:
-            print(f"Error decoded URL '{encoded_url.strip()}': {e}")
-    print("Decoded URLs:")
+            print(f"[-] Error decoded URL '{encoded_url.strip()}': {e}")
+    print("[+] Shinichi Kudo: The message uncovered is:")
     for decoded_url in decoded_urls:
         print(decoded_url)
+
 """Function for decoding Vigenere Cipher"""
 def vigenere_decode(ciphertext, keyword):
     keyword = keyword.upper()
@@ -290,7 +312,7 @@ def brainfuck_decode(code):
                 loop_map[start] = idx
                 loop_map[idx] = start
             else:
-                raise ValueError("Mismatched brackets in Brainfuck code.")
+                raise ValueError("[-] Shinichi Kudo: Mismatched brackets in Brainfuck code.")
     idx = 0
     while idx < len(code):
         command = code[idx]
@@ -332,7 +354,7 @@ def affine_decrypt(ciphertext, a, b):
     m = 26
     a_inv = mod_inverse(a, m)
     if a_inv is None:
-        raise ValueError("The key 'a' has no modular inverse, decryption is not possible.")
+        raise ValueError("[-] Shinichi Kudo: The key 'a' has no modular inverse, decryption is not possible.")
     plaintext = ""
     for char in ciphertext:
         if char.isalpha():
@@ -470,172 +492,204 @@ def decode_nato_phonetic(nato_message):
             decoded_message += "?"
     return decoded_message
 
+"""Function for Fernet Decoder"""
+def decode_fernet(ciphertext: str, key: str) -> str:
+    try:
+        fernet = Fernet(key)
+        decrypted_string = fernet.decrypt(ciphertext.encode())
+        decoded_message = decrypted_string.decode('utf-8')
+        return decoded_message
+    except Exception as e:
+        print("[-] Shinichi Kudo: Decoding Failed.")
+
 """Main Menu Function"""
 def menu():
-    print(kudo)
+    print_with_grace(kudo, 2)
+    print()
+    talk_with_kudo()
     while True:
         try:
             prompt = input("~> ")
             if not prompt:
                 continue
             elif prompt == '1':
-                key = input("Enter the AES key (16, 24, or 32 bytes): ")
+                key = input("[*] Enter the AES key (16, 24, or 32 bytes): ")
                 key_encode = key.encode('utf-8')
-                print("Length of key before encoding:", len(key))
-                print("Length of key after encoding:", len(key_encode))
-                ciphertext_b64 = input("Enter the encoded ciphertext: ")
+                ciphertext_b64 = input("[*] Enter the encoded ciphertext: ")
                 ciphertext = base64.b64decode(ciphertext_b64)
                 try:
                     print("-" * 30)
                     plaintext = decrypt_aes(key_encode, ciphertext)
-                    print("Decrypted plaintext:", plaintext)
+                    print(f"[+] Shinichi Kudo: The message uncovered is '{plaintext}'")
                 except Exception as e:
-                    print("Error:", e)
+                    print("[-] Shinichi Kudo:", e)
             elif prompt == '2':
-                encoded_text = input("Enter the ROT13 String: ")
+                encoded_text = input("[*] Enter the ROT13 String: ")
                 print('-' * 30)
                 decoded_text = rot13_decoder(encoded_text)
-                print(f"Decoded Text: {decoded_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '3':
-                private_key_path = input("Enter the RSA private key path: ")
-                ciphertext_b64 = input("Enter the encoded ciphertext: ")
+                private_key_path = input("[*] Enter the RSA private key path: ")
+                ciphertext_b64 = input("[*] Enter the encoded ciphertext: ")
                 try:
                     plaintext = decrypt_rsa(private_key_path, ciphertext_b64)
                     print("-" * 30)
-                    print("Decrypted plaintext:", plaintext)
+                    print(f"[+] Shinichi Kudo: The message uncovered is '{plaintext}'")
                 except Exception as e:
-                    print("Error:", e)
+                    print("[-] Shinichi Kudo:", e)
             elif prompt == '4':
-                encoded_data = input("Enter the encoded data: ")
+                encoded_data = input("[*] Enter the encoded data: ")
                 decoded_data = decode_ascii85(encoded_data)
                 print("-" * 30)
-                print(f"Decoded String: {decoded_data}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_data}'")
             elif prompt == '5':
-                encoded_string = input("Enter the encoded data: ")
+                encoded_string = input("[*] Enter the encoded data: ")
                 print("-" * 30)
                 base32_decode(encoded_string)
             elif prompt == '6':
-                encoded_string = input("Enter the encoded data: ")
+                encoded_string = input("[*] Enter the encoded data: ")
                 print("-" * 30)
                 base64_decode(encoded_string)
             elif prompt == '7':
-                text = input("Enter the encoded string: ")
-                shift = int(input("Enter the shift value: "))
+                text = input("[*] Enter the encoded string: ")
+                shift = int(input("[*] Enter the shift value: "))
                 decrypted_text = caesar_decoder(text, shift)
                 print("-" * 30)
-                print(f"Decrypted text: {decrypted_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decrypted_text}'")
             elif prompt == '8':
-                hex_input = input("Enter the hexadecimal string: ")
+                hex_input = input("[*] Enter the hexadecimal string: ")
                 plaintext = hex_to_plaintext(hex_input)
                 print("-" * 30)
-                print("Plaintext:", plaintext)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{plaintext}'")
             elif prompt == '9':
-                html_entity = input("Enter the HTML Entity: ")
+                html_entity = input("[*] Enter the HTML Entity: ")
                 decoded_entity = html_entity_decoder(html_entity)
                 print("-" * 30)
-                print("Decoded Entity: ", decoded_entity)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_entity}'")
             elif prompt == '10':
-                morse_code = input("Enter the Morse Code: ")
+                morse_code = input("[*] Enter the Morse Code: ")
                 decoded_message = morse_decoder(morse_code)
                 print("-" * 30)
-                print("Decoded Message:", decoded_message)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_message}'")
             elif prompt == '11':
-                punnycode_text = input("Enter the Punnycode Text: ")
+                punnycode_text = input("[*] Enter the Punnycode Text: ")
                 decoded_text = punnycode_decoder(punnycode_text)
                 print("-" * 30)
-                print(f"Decoded Punnycode Text: {decoded_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '12':
-                quoted_printable_text = input("Enter the QPT: ")
+                quoted_printable_text = input("[*] Enter the QPT: ")
                 decoded_text = quoted_printable_decoder(quoted_printable_text)
                 print("-" * 30)
-                print(f"Decoded Text: {decoded_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '13':
-                unicode_text = input("Enter the Unicode Text: ")
+                unicode_text = input("[*] Enter the Unicode Text: ")
                 decoded_text = unicode_decoder(unicode_text)
                 print("-" * 30)
-                print("Decoded text:", decoded_text)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '14':
-                timestamp = input("Enter Unix timestamp: ")
+                timestamp = input("[*] Enter Unix timestamp: ")
                 decoded_time = unix_time_decoder(timestamp)
                 print("-" * 30)
-                print("Decoded time:", decoded_time)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_time}'")
             elif prompt == '15':
                 url_decoder()
             elif prompt == '16':
-                ciphertext = input("Enter the ciphertext: ")
-                keyword = input("Enter the keyword: ")
+                ciphertext = input("[*] Enter the ciphertext: ")
+                keyword = input("[*] Enter the keyword: ")
                 decoded_text = vigenere_decode(ciphertext, keyword)
                 print("-" * 30)
-                print(f"Decoded String: {decoded_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '17':
-                ciphertext = input("Enter the ciphertext: ")
-                key = int(input("Enter the key (an integer): "))
+                ciphertext = input("[*] Enter the ciphertext: ")
+                try:
+                    key = int(input("[*] Enter the key (an integer): "))
+                except ValueError:
+                    print("[-] Shinichi Kudo: Integer needed")
                 decoded_text = xor_decode(ciphertext, key)
                 print("-" * 30)
-                print(f"Decoded String: {decoded_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '18':
-                brainfuck_code = input("Enter the brainfuck code: ")
+                brainfuck_code = input("[*] Enter the brainfuck code: ")
                 decoded_text = brainfuck_decode(brainfuck_code)
                 print("-" * 30)
-                print(f"Decoded text: {decoded_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '19':
-                reversed_word = input("Enter the reversed word: ")
+                reversed_word = input("[*] Enter the reversed word: ")
                 original_word = decode_reverse(reversed_word)
                 print("-" * 30)
-                print(f"Decoded String: {original_word}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{original_word}'")
             elif prompt == '20':
-                ciphertext = input("Enter the ciphertext: ")
-                a = int(input("Enter the key 'a' (must be coprime with 26): "))
-                b = int(input("Enter the key 'b': "))
+                ciphertext = input("[*] Enter the ciphertext: ")
                 try:
+                    a = int(input("[*] Enter the key 'a' (must be coprime with 26): "))
+                    b = int(input("[*] Enter the key 'b': "))
                     plaintext = affine_decrypt(ciphertext, a, b)
-                    print(f"Decoded String: {plaintext}")
+                    print(f"[+] Shinichi Kudo: The message uncovered is '{plaintext}'")
                 except ValueError as e:
-                    print(e)
+                    print("[-] Shinichi Kudo: Integer needed")
             elif prompt == '21':
-                ciphertext = input("Enter the ciphertext: ")
+                ciphertext = input("[*] Enter the ciphertext: ")
                 decoded_text = base58_decode(ciphertext)
                 print("-" * 30)
-                print(f"Decoded String: {decoded_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '22':
-                ciphertext = input("Enter the ciphertext: ")
+                ciphertext = input("[*] Enter the ciphertext: ")
                 decoded_text = a1z26_decoder(ciphertext)
                 print("-" * 30)
-                print(f"Decoded String: {decoded_text}")
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_text}'")
             elif prompt == '23':
-                ciphertext = input("Enter the encoded text: ")
-                num_of_rails = int(input("Enter the number of rails: "))
+                ciphertext = input("[*] Enter the encoded text: ")
+                num_of_rails = int(input("[*] Enter the number of rails: "))
                 decoded_message = rail_fence_decode(ciphertext, num_of_rails)
-                print(f"Decoded String: {decoded_message}")
+                print("-" * 30)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_message}'")
             elif prompt == '24':
-                cipher_alphabet = input("Enter the cipher alphabet (26 letters): ").upper()
-                ciphertext = input("Enter the encoded message: ")
+                cipher_alphabet = input("[*] Enter the cipher alphabet (26 letters): ").upper()
+                ciphertext = input("[*] Enter the encoded message: ")
                 decoded_message = substitution_cipher_decoder(cipher_alphabet, ciphertext)
-                print(f"Decoded String: {decoded_message}")
+                print("-" * 30)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_message}'")
             elif prompt == '25':
-                ciphertext = input("Enter the encoded Tap Code message (pairs of dots separated by spaces): ")
+                ciphertext = input("[*] Enter the encoded Tap Code message (pairs of dots separated by spaces): ")
                 decoded_message = tap_code_decoder(ciphertext)
-                print(f"Decoded String: {decoded_message}")
+                print("-" * 30)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_message}'")
             elif prompt == '26':
-                ciphertext = input("Enter the encoded Nihilist cipher message (pairs of digits separated by spaces): ")
-                key = input("Enter the key: ")
+                ciphertext = input("[*] Enter the encoded Nihilist cipher message (pairs of digits separated by spaces): ")
+                key = input("[*] Enter the key: ")
                 polybius_square = create_polybius_square()
                 decoded_message = decode_nihilist_cipher(ciphertext, key, polybius_square)
-                print(f"Decoded String: {decoded_message}")
+                print("-" * 30)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_message}'")
             elif prompt == '27':
-                ciphertext = input("Enter the encoded Polybius cipher message (pairs of digits without spaces): ")
+                ciphertext = input("[*] Enter the encoded Polybius cipher message (pairs of digits without spaces): ")
                 polybius_square = create_polybius_square()
                 decoded_message = decode_polybius_cipher(ciphertext, polybius_square)
-                print(f"Decoded String: {decoded_message}")
+                print("-" * 30)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_message}'")
             elif prompt == '28':
-                nato_message = input("Enter the NATO phonetic encoded message (words separated by spaces): ")
+                nato_message = input("[*] Enter the NATO phonetic encoded message (words separated by spaces): ")
                 decoded_message = decode_nato_phonetic(nato_message)
-                print(f"Decoded String: {decoded_message}")
+                print("-" * 30)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_message}'")
+            elif prompt == '29':
+                ciphertext = input("[*] Enter the encoded Fernet ciphertext: ")
+                key = input("[*] Enter the key: ")
+                decoded_message = decode_fernet(ciphertext, key)
+                print("-" * 30)
+                print(f"[+] Shinichi Kudo: The message uncovered is '{decoded_message}'")
+            elif prompt == 'exit' or prompt == 'quit':
+                print_with_grace("[+] Shinichi Kudo: Thank you for using my deductions skills. See you again!", 3)
+                print()
+                break
             elif prompt == 'h':
-                print(help_menu)
+                print_with_grace(help_menu, 1)
+                print()
             else:
-                print("Invalid Option!")
+                print("[-] Shinichi Kudo: I'm sorry but I can't figure out what you want.")
         except KeyboardInterrupt:
+            print_with_grace("\n[+] Shinichi Kudo: Thank you for using my deductions skills. See you again!", 3)
+            print()
             break
             
 if __name__ == "__main__":
