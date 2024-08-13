@@ -1,0 +1,5 @@
+pycryptodome
+base58
+idna
+quopri
+cryptography
