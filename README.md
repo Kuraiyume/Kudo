@@ -2,7 +2,7 @@
 
 # KUDO: Decoder Toolkit
 
-KUDO is a comprehensive decoder toolkit, offers a variety of decoding algorithms to decrypt and decode different types of encoded data.
+Kudo is a versatile decoding toolkit that provides a range of algorithms to handle different types of encoded data. It simplifies the process of decrypting and decoding various formats, making it easier to work with both simple and complex data. With its user-friendly design, Kudo helps you efficiently manage and interpret data.
 
 ## Available Algorithms
 
@@ -35,42 +35,28 @@ KUDO is a comprehensive decoder toolkit, offers a variety of decoding algorithms
 27. Polybius Cipher
 28. North Atlantic Treaty Organization (NATO Phonetic Alphabet)
 
-## Usage
-
-## Interface
-
-To use KUDO, simply run the script and follow the on-screen prompts to decode your encoded data. Each algorithm has its own specific requirements and input format.
-
-```bash
-AES
-Enter the key: "your_aes_key_here"
-Enter the encoded text: "your_base64_encoded_ciphertext_here"
-Decrypted String: "Decoded/Decrypted text"
-```
-
-## Argument (kudo_v2.py)
-
-```bash
-python3 kudo.py -a <algorithm> -d <data>
-```
-
 ## Installation
 
-KUDO requires Python 3 and the following packages:
 
-- pycryptodome
-- base64
-- base58
-- idna
-- quopri
+1. Clone the repository
+   ```bash
+   git clone https://github.com/veilwr4ith/Kudo
+   ```
 
-```bash
-pip install pycryptodome base58 idna quopri
-```
+2. Install the necessary libraries for Kudo
+  ```bash
+  pip3 install -r requirements.txt
+  ```
 
-```bash
-python3 kudo.py
-```
+3. Integrate with Shinichi Kudo
+  ```bash
+  python3 kudo.py
+  ```
+
+4. If you don't know what Shinichi knows
+   ```bash
+   ~> h
+   ```
 
 ## Author
 
