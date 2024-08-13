@@ -37,21 +37,20 @@ Kudo is a versatile decoding toolkit that provides a range of algorithms to hand
 
 ## Installation
 
-
 1. Clone the repository
    ```bash
    git clone https://github.com/veilwr4ith/Kudo
    ```
 
 2. Install the necessary libraries for Kudo
-  ```bash
-  pip3 install -r requirements.txt
-  ```
+   ```bash
+   pip3 install -r requirements.txt
+   ```
 
 3. Integrate with Shinichi Kudo
-  ```bash
-  python3 kudo.py
-  ```
+   ```bash
+   python3 kudo.py
+   ```
 
 4. If you don't know what Shinichi knows
    ```bash
