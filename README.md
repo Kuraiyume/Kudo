@@ -58,6 +58,10 @@ Kudo is a versatile decoding toolkit that provides a range of algorithms to hand
    ~> h
    ```
 
+## License
+
+Kudo is licensed under MIT License.
+
 ## Author
 
 - **Veilwr4ith**
