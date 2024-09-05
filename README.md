@@ -64,6 +64,6 @@ Kudo is licensed under MIT License.
 
 ## Author
 
-- **Zephyr**
+- **Kuraiyume**
 - **mkdirlove**
 
