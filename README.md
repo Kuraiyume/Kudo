@@ -40,7 +40,7 @@ Kudo is a versatile decoding toolkit that provides a range of algorithms to hand
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/z33phyr/Kudo
+   git clone https://github.com/Kuraiyume/Kudo
    ```
 
 2. Install the necessary libraries for Kudo
