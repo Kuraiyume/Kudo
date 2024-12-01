@@ -2,7 +2,7 @@
 ------------------------------------------
 KUDO: Decoder Toolkit                    |
                                          |
-Author: Kuraiyume                        |
+Author: Kuroshiro                        |
 ------------------------------------------
 """
 
